@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@clerk/clerk-react'
 import { FileText, Clock, CheckCircle, XCircle, AlertTriangle } from 'lucide-react'
+import { apiUrl } from '../services/apiUrl'
 
 export default function RequestList({ onSelect, refreshTrigger }) {
   const { getToken } = useAuth()
@@ -11,7 +12,7 @@ export default function RequestList({ onSelect, refreshTrigger }) {
     const fetchRequests = async () => {
       try {
         const token = await getToken()
-        const res = await fetch('http://localhost:8080/api/requests', {
+        const res = await fetch(apiUrl('/requests'), {
           headers: { 'Authorization': `Bearer ${token}` }
         })
         if (res.ok) setRequests(await res.json())

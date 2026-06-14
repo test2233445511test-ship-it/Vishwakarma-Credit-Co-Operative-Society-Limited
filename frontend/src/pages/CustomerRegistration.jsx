@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useUser, useAuth } from '@clerk/clerk-react'
 import { useNavigate } from 'react-router-dom'
 import { FileText, UserPlus, CheckCircle, AlertCircle } from 'lucide-react'
+import { apiUrl } from '../services/apiUrl'
 
 export default function CustomerRegistration() {
   const { isLoaded, isSignedIn, user } = useUser()
@@ -33,7 +34,7 @@ export default function CustomerRegistration() {
     
     try {
       const token = await getToken()
-      const res = await fetch('http://localhost:8080/api/data-entry/customer-application', {
+      const res = await fetch(apiUrl('/data-entry/customer-application'), {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

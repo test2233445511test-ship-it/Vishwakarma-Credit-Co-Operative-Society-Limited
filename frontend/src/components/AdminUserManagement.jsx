@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@clerk/clerk-react'
 import { Search, Check, X } from 'lucide-react'
+import { apiUrl } from '../services/apiUrl'
 
 export default function AdminUserManagement() {
   const { getToken } = useAuth()
@@ -13,7 +14,7 @@ export default function AdminUserManagement() {
     const fetch = async () => {
       try {
         const token = await getToken()
-        const res = await fetch('http://localhost:8080/api/admin/users', {
+        const res = await fetch(apiUrl('/admin/users'), {
           headers: { 'Authorization': `Bearer ${token}` }
         })
         if (res.ok) setUsers(await res.json())
@@ -26,7 +27,7 @@ export default function AdminUserManagement() {
   const updateRole = async (userId, role) => {
     try {
       const token = await getToken()
-      const res = await fetch(`http://localhost:8080/api/admin/users/${userId}/role`, {
+      const res = await fetch(apiUrl(`/admin/users/${userId}/role`), {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ role }),
@@ -41,7 +42,7 @@ export default function AdminUserManagement() {
   const toggleStatus = async (userId, currentStatus) => {
     try {
       const token = await getToken()
-      const res = await fetch(`http://localhost:8080/api/admin/users/${userId}/status`, {
+      const res = await fetch(apiUrl(`/admin/users/${userId}/status`), {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ active: !currentStatus }),

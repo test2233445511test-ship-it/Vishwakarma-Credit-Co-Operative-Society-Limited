@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@clerk/clerk-react'
 import { Clock, Search, Activity } from 'lucide-react'
+import { apiUrl } from '../services/apiUrl'
 
 export default function AdminActivityLog() {
   const { getToken } = useAuth()
@@ -12,7 +13,7 @@ export default function AdminActivityLog() {
     const fetch = async () => {
       try {
         const token = await getToken()
-        const res = await fetch('http://localhost:8080/api/admin/audit', {
+        const res = await fetch(apiUrl('/admin/audit'), {
           headers: { 'Authorization': `Bearer ${token}` }
         })
         if (res.ok) setLogs(await res.json())

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import {
   Users, Landmark, CreditCard, Shield, CheckCircle, Plus, Search, Check, X, Eye
 } from 'lucide-react'
+import { apiUrl } from '../services/apiUrl'
 
 export default function ManagerDashboard() {
   const { isLoaded, isSignedIn, user } = useUser()
@@ -17,7 +18,7 @@ export default function ManagerDashboard() {
   const fetchCustomers = async () => {
     try {
       const token = await getToken()
-      const res = await fetch('http://localhost:8080/api/manager/customers', {
+      const res = await fetch(apiUrl('/manager/customers'), {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       if (res.ok) {
@@ -39,7 +40,7 @@ export default function ManagerDashboard() {
     if (!isSignedIn) return
     const tokenPromise = getToken()
     tokenPromise.then(token => {
-      fetch('http://localhost:8080/api/manager/customers', {
+      fetch(apiUrl('/manager/customers'), {
         headers: { 'Authorization': `Bearer ${token}` }
       })
         .then(res => res.json())
@@ -51,7 +52,7 @@ export default function ManagerDashboard() {
   const approveApplication = async (userId) => {
     try {
       const token = await getToken()
-      const res = await fetch(`http://localhost:8080/api/manager/approve-application/${userId}`, { 
+      const res = await fetch(apiUrl(`/manager/approve-application/${userId}`), { 
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       })
@@ -70,7 +71,7 @@ export default function ManagerDashboard() {
   const rejectApplication = async (userId) => {
     try {
       const token = await getToken()
-      const res = await fetch(`http://localhost:8080/api/manager/reject-application/${userId}`, { 
+      const res = await fetch(apiUrl(`/manager/reject-application/${userId}`), { 
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       })

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@clerk/clerk-react'
 import { Bell, X, Info, CheckCircle, AlertTriangle, AlertOctagon } from 'lucide-react'
+import { apiUrl } from '../services/apiUrl'
 
 export default function NotificationPanel({ onClose }) {
   const { getToken } = useAuth()
@@ -11,7 +12,7 @@ export default function NotificationPanel({ onClose }) {
     const fetch = async () => {
       try {
         const token = await getToken()
-        const res = await fetch('http://localhost:8080/api/notifications', {
+        const res = await fetch(apiUrl('/notifications'), {
           headers: { 'Authorization': `Bearer ${token}` }
         })
         if (res.ok) setNotifications(await res.json())
@@ -27,7 +28,7 @@ export default function NotificationPanel({ onClose }) {
   const markRead = async (id) => {
     try {
       const token = await getToken()
-      await fetch(`http://localhost:8080/api/notifications/${id}/read`, {
+      await fetch(apiUrl(`/notifications/${id}/read`), {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
       })
@@ -40,7 +41,7 @@ export default function NotificationPanel({ onClose }) {
   const markAllRead = async () => {
     try {
       const token = await getToken()
-      await fetch('http://localhost:8080/api/notifications/read-all', {
+      await fetch(apiUrl('/notifications/read-all'), {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
       })

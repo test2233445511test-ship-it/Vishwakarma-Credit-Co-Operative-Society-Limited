@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { useAuth } from '@clerk/clerk-react'
 import { Upload, File, X, Loader } from 'lucide-react'
+import { apiUrl } from '../services/apiUrl'
 
 export default function DocumentUpload({ requestId, onUpload }) {
   const { getToken } = useAuth()
@@ -43,7 +44,7 @@ export default function DocumentUpload({ requestId, onUpload }) {
       formData.append('file', file)
       if (requestId) formData.append('requestId', requestId)
 
-      const res = await fetch('http://localhost:8080/api/documents/upload', {
+      const res = await fetch(apiUrl('/documents/upload'), {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
         body: formData,

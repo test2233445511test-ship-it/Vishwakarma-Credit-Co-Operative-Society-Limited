@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '@clerk/clerk-react'
 import { LayoutDashboard, Shield, FileText, Activity, Users, Settings, Server, Key } from 'lucide-react'
 import AdminActivityLog from '../components/AdminActivityLog'
+import { apiUrl } from '../services/apiUrl'
 
 const tabs = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
@@ -53,9 +54,9 @@ function SystemOverview() {
       const token = await getToken()
       const headers = { 'Authorization': `Bearer ${token}` }
       const results = await Promise.allSettled([
-        fetch('http://localhost:8080/api/super-admin/system/health', { headers }).then(r => r.json()),
-        fetch('http://localhost:8080/api/super-admin/sessions/stats', { headers }).then(r => r.json()),
-        fetch('http://localhost:8080/api/super-admin/login-attempts/stats', { headers }).then(r => r.json()),
+        fetch(apiUrl('/super-admin/system/health'), { headers }).then(r => r.json()),
+        fetch(apiUrl('/super-admin/sessions/stats'), { headers }).then(r => r.json()),
+        fetch(apiUrl('/super-admin/login-attempts/stats'), { headers }).then(r => r.json()),
       ])
       if (results[0].status === 'fulfilled') setHealth(results[0].value)
       if (results[1].status === 'fulfilled') setSessionStats(results[1].value)
@@ -105,8 +106,8 @@ function RoleManager() {
       const token = await getToken()
       const headers = { 'Authorization': `Bearer ${token}` }
       const [r, p] = await Promise.all([
-        fetch('http://localhost:8080/api/super-admin/roles', { headers }).then(r => r.json()),
-        fetch('http://localhost:8080/api/super-admin/permissions', { headers }).then(r => r.json()),
+        fetch(apiUrl('/super-admin/roles'), { headers }).then(r => r.json()),
+        fetch(apiUrl('/super-admin/permissions'), { headers }).then(r => r.json()),
       ])
       setRoles(r)
       setPermissions(p)
@@ -130,7 +131,7 @@ function RoleManager() {
     setSaving(true)
     try {
       const token = await getToken()
-      const res = await fetch(`http://localhost:8080/api/super-admin/roles/${editingRole.id}`, {
+      const res = await fetch(apiUrl(`/super-admin/roles/${editingRole.id}`), {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ permissionIds: selectedPerms }),
@@ -219,8 +220,8 @@ function SecurityReports() {
       const token = await getToken()
       const headers = { 'Authorization': `Bearer ${token}` }
       const [a, s] = await Promise.all([
-        fetch('http://localhost:8080/api/super-admin/login-attempts', { headers }).then(r => r.json()),
-        fetch('http://localhost:8080/api/super-admin/login-attempts/stats', { headers }).then(r => r.json()),
+        fetch(apiUrl('/super-admin/login-attempts'), { headers }).then(r => r.json()),
+        fetch(apiUrl('/super-admin/login-attempts/stats'), { headers }).then(r => r.json()),
       ])
       setAttempts(a)
       setStats(s)
@@ -296,8 +297,8 @@ function ActiveSessions() {
       const token = await getToken()
       const headers = { 'Authorization': `Bearer ${token}` }
       const [s, st] = await Promise.all([
-        fetch('http://localhost:8080/api/super-admin/sessions', { headers }).then(r => r.json()),
-        fetch('http://localhost:8080/api/super-admin/sessions/stats', { headers }).then(r => r.json()),
+        fetch(apiUrl('/super-admin/sessions'), { headers }).then(r => r.json()),
+        fetch(apiUrl('/super-admin/sessions/stats'), { headers }).then(r => r.json()),
       ])
       setSessions(s)
       setStats(st)

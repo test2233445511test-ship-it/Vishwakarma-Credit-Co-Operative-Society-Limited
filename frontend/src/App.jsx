@@ -15,11 +15,12 @@ import CustomerRegistration from './pages/CustomerRegistration'
 import Forbidden from './pages/Forbidden'
 import ProtectedRoute from './components/ProtectedRoute'
 import './App.css'
+import { apiUrl } from './services/apiUrl'
 
 export default function App() {
   useEffect(() => {
     const data = { page: window.location.pathname, referrer: document.referrer || '' }
-    fetch('http://localhost:8080/api/visitor/track', {
+    fetch(apiUrl('/visitor/track'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)

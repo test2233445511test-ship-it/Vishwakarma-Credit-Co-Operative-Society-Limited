@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@clerk/clerk-react'
 import { File, Download, FileText, Image, FileSpreadsheet } from 'lucide-react'
+import { apiUrl } from '../services/apiUrl'
 
 export default function DocumentList() {
   const { getToken } = useAuth()
@@ -11,7 +12,7 @@ export default function DocumentList() {
     const fetchDocs = async () => {
       try {
         const token = await getToken()
-        const res = await fetch('http://localhost:8080/api/documents', {
+        const res = await fetch(apiUrl('/documents'), {
           headers: { 'Authorization': `Bearer ${token}` }
         })
         if (res.ok) setDocuments(await res.json())
@@ -55,7 +56,7 @@ export default function DocumentList() {
             </span>
           </div>
           <a
-            href={`http://localhost:8080/api/documents/download/${doc.id}`}
+            href={apiUrl(`/documents/download/${doc.id}`)}
             className="btn btn-outline btn-sm"
             download
           >

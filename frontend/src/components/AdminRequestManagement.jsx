@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@clerk/clerk-react'
 import { Check, X, UserCheck, Clock, AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
+import { apiUrl } from '../services/apiUrl'
 
 export default function AdminRequestManagement() {
   const { getToken } = useAuth()
@@ -13,8 +14,8 @@ export default function AdminRequestManagement() {
       try {
         const token = await getToken()
         const url = filter === 'pending'
-          ? 'http://localhost:8080/api/admin/requests/pending'
-          : 'http://localhost:8080/api/admin/requests'
+          ? apiUrl('/admin/requests/pending')
+          : apiUrl('/admin/requests')
         const res = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } })
         if (res.ok) setRequests(await res.json())
       } catch (err) { console.error(err) }
@@ -28,7 +29,7 @@ export default function AdminRequestManagement() {
       const token = await getToken()
       const body = { status }
       if (assignedTo) body.assignedTo = assignedTo
-      const res = await fetch(`http://localhost:8080/api/admin/requests/${id}/status`, {
+      const res = await fetch(apiUrl(`/admin/requests/${id}/status`), {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

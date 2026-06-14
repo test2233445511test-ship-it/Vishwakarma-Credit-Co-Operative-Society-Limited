@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@clerk/clerk-react'
 import { Inbox, UserCheck, Users, Search, Check, X, Clock, AlertTriangle, MessageSquare, Send, FileText } from 'lucide-react'
+import { apiUrl } from '../services/apiUrl'
 
 const tabs = [
   { id: 'requests', label: 'My Requests', icon: Inbox },
@@ -46,7 +47,7 @@ function AssignedRequests({ getToken }) {
     const load = async () => {
       try {
         const token = await getToken()
-        const res = await fetch('http://localhost:8080/api/staff/requests', {
+        const res = await fetch(apiUrl('/staff/requests'), {
           headers: { 'Authorization': `Bearer ${token}` }
         })
         if (res.ok) setRequests(await res.json())
@@ -59,7 +60,7 @@ function AssignedRequests({ getToken }) {
   const updateStatus = async (id, status) => {
     try {
       const token = await getToken()
-      const res = await fetch(`http://localhost:8080/api/staff/requests/${id}/status`, {
+      const res = await fetch(apiUrl(`/staff/requests/${id}/status`), {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
@@ -75,7 +76,7 @@ function AssignedRequests({ getToken }) {
   const saveNotes = async (id) => {
     try {
       const token = await getToken()
-      const res = await fetch(`http://localhost:8080/api/staff/requests/${id}/notes`, {
+      const res = await fetch(apiUrl(`/staff/requests/${id}/notes`), {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ staffNotes }),
@@ -229,7 +230,7 @@ function PendingApprovals({ getToken }) {
     const load = async () => {
       try {
         const token = await getToken()
-        const res = await fetch('http://localhost:8080/api/admin/users/pending', {
+        const res = await fetch(apiUrl('/admin/users/pending'), {
           headers: { 'Authorization': `Bearer ${token}` }
         })
         if (res.ok) setCustomers(await res.json())
@@ -242,7 +243,7 @@ function PendingApprovals({ getToken }) {
   const approve = async (id) => {
     try {
       const token = await getToken()
-      const res = await fetch(`http://localhost:8080/api/manager/approve-application/${id}`, {
+      const res = await fetch(apiUrl(`/manager/approve-application/${id}`), {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       })
@@ -255,7 +256,7 @@ function PendingApprovals({ getToken }) {
   const reject = async (id) => {
     try {
       const token = await getToken()
-      const res = await fetch(`http://localhost:8080/api/manager/reject-application/${id}`, {
+      const res = await fetch(apiUrl(`/manager/reject-application/${id}`), {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       })
@@ -316,7 +317,7 @@ function CustomerLookup({ getToken }) {
     const load = async () => {
       try {
         const token = await getToken()
-        const res = await fetch('http://localhost:8080/api/manager/customers', {
+        const res = await fetch(apiUrl('/manager/customers'), {
           headers: { 'Authorization': `Bearer ${token}` }
         })
         if (res.ok) setCustomers(await res.json())

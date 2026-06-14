@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useLanguage } from '../i18n/useLanguage'
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, Navigation } from 'lucide-react'
+import { apiUrl } from '../services/apiUrl'
 
 export default function Contact() {
   const { t } = useLanguage()
@@ -17,7 +18,7 @@ export default function Contact() {
     setLoading(true)
     setError('')
     try {
-      const res = await fetch('http://localhost:8080/api/contact', {
+      const res = await fetch(apiUrl('/contact'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),

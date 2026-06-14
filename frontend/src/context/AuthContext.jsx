@@ -1,4 +1,5 @@
 import { createContext, useState, useCallback } from 'react'
+import { apiUrl } from '../services/apiUrl'
 
 const AuthContext = createContext(null)
 
@@ -35,7 +36,7 @@ export function AuthProvider({ children }) {
       return data
     }
 
-    const res = await fetch('http://localhost:8080/api/auth/login', {
+    const res = await fetch(apiUrl('/auth/login'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -52,7 +53,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   const requestOtp = useCallback(async (accountNumber, mobileNumber) => {
-    const res = await fetch('http://localhost:8080/api/auth/request-otp', {
+    const res = await fetch(apiUrl('/auth/request-otp'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ accountNumber, mobileNumber }),
@@ -65,7 +66,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   const verifyOtp = useCallback(async (accountNumber, mobileNumber, otp) => {
-    const res = await fetch('http://localhost:8080/api/auth/verify-otp', {
+    const res = await fetch(apiUrl('/auth/verify-otp'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ accountNumber, mobileNumber, otp }),
@@ -82,7 +83,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   const register = useCallback(async (userData) => {
-    const res = await fetch('http://localhost:8080/api/auth/register', {
+    const res = await fetch(apiUrl('/auth/register'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData),

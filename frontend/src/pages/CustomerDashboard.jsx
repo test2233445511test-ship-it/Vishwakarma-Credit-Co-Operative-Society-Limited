@@ -14,6 +14,7 @@ import DocumentUpload from '../components/DocumentUpload'
 import DocumentList from '../components/DocumentList'
 import NotificationPanel from '../components/NotificationPanel'
 import ProfileSettings from './ProfileSettings'
+import { apiUrl } from '../services/apiUrl'
 
 export default function CustomerDashboard() {
   const { isLoaded, isSignedIn } = useUser()
@@ -36,7 +37,7 @@ export default function CustomerDashboard() {
     const fetchData = async () => {
       try {
         const token = await getToken()
-        const res = await fetch('http://localhost:8080/api/customer/dashboard-data', {
+        const res = await fetch(apiUrl('/customer/dashboard-data'), {
           headers: { 'Authorization': `Bearer ${token}` }
         })
         if (res.ok) {

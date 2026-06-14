@@ -4,6 +4,7 @@ import {
   Users, FileText, CheckCircle, Clock, UserPlus, Activity,
   TrendingUp, BarChart3
 } from 'lucide-react'
+import { apiUrl } from '../services/apiUrl'
 
 export default function AdminAnalytics() {
   const { getToken } = useAuth()
@@ -14,7 +15,7 @@ export default function AdminAnalytics() {
     const fetch = async () => {
       try {
         const token = await getToken()
-        const res = await fetch('http://localhost:8080/api/admin/analytics/summary', {
+        const res = await fetch(apiUrl('/admin/analytics/summary'), {
           headers: { 'Authorization': `Bearer ${token}` }
         })
         if (res.ok) setSummary(await res.json())

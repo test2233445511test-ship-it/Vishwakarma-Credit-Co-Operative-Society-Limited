@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useAuth } from '@clerk/clerk-react'
 import { Send, Loader } from 'lucide-react'
+import { apiUrl } from '../services/apiUrl'
 
 export default function RequestForm({ onSuccess }) {
   const { getToken } = useAuth()
@@ -19,7 +20,7 @@ export default function RequestForm({ onSuccess }) {
     setLoading(true)
     try {
       const token = await getToken()
-      const res = await fetch('http://localhost:8080/api/requests', {
+      const res = await fetch(apiUrl('/requests'), {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ type, description })

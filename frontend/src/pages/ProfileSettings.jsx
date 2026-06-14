@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useUser, useAuth } from '@clerk/clerk-react'
 import { Save, Loader, User, Mail, Phone, MapPin, Briefcase } from 'lucide-react'
+import { apiUrl } from '../services/apiUrl'
 
 export default function ProfileSettings() {
   const { user } = useUser()
@@ -15,7 +16,7 @@ export default function ProfileSettings() {
     const fetchProfile = async () => {
       try {
         const token = await getToken()
-        const res = await fetch('http://localhost:8080/api/customer/profile', {
+        const res = await fetch(apiUrl('/customer/profile'), {
           headers: { 'Authorization': `Bearer ${token}` }
         })
         if (res.ok) {
@@ -47,7 +48,7 @@ export default function ProfileSettings() {
     setSaved(false)
     try {
       const token = await getToken()
-      const res = await fetch('http://localhost:8080/api/customer/profile', {
+      const res = await fetch(apiUrl('/customer/profile'), {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
